@@ -6,10 +6,14 @@ class WixcraftTest extends Specification {
 
   "Game" should {
     "allow a character to kill another character" in {
-      val game = new WixcraftGame
+      val fakeDice = new Dice {
+        val ValueThatKillsACharacter = 6
+        override def roll: Int = ValueThatKillsACharacter
+      }
+      val game = new WixcraftGame(fakeDice)
       game.addCharacter("Ittai")
       game.addCharacter("Talya")
-      game.playTurn()
+      game.playRound()
       game.deadCharacters aka "Dead characters" must contain(exactly("Talya"))
     }
 
